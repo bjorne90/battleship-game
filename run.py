@@ -74,3 +74,39 @@ def print_boards(player_board, computer_board, name):
           for i in range(len(hidden_computer_board[0]))))
     for i, row in enumerate(hidden_computer_board):
         print(str(i) + " " + " ".join(row))
+
+
+def check_ship_placement_valid(board, row, col, size, orientation):
+    if orientation == "horizontal":
+        if col + size > len(board[0]):
+            return False
+        for i in range(size):
+            if board[row][col + i] != "0":
+                return False
+    else: #vertical
+        if row + size > len(board):
+            return False
+        for i in range(size):
+            if board[row + i][col] != "0":
+                return False
+    return True
+
+
+def place_ship(board, row, col, size, orientation):
+    if orientation == "horizontal":
+        for i in range(size):
+            board[row][col + i] = "S"
+    else: #vertical
+        for i in range(size):
+            board[row + i][col] = "S"
+
+
+def place_random_fleet(board, fleet):
+    for ship in fleet:
+        size, _ = ship
+        while True:
+            row, col = random_row(board), random_col(board)
+            orientation = random.choice(["horizontal", "vertical"])
+            if check_ship_placement_valid(board, row, col, size, orientation):
+                place_ship(board, row, col, size, orientation)
+                break
