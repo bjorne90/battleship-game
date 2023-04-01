@@ -46,20 +46,32 @@ will show you.
 
 
 def random_row(board):
+    """
+    Return a random row number within the bounds of the given board.
+    """
     return random.randint(0, len(board) - 1)
 
 
 def random_col(board):
+    """
+    Return a random column number within the bounds of the given board.
+    """
     return random.randint(0, len(board[0]) - 1)
 
 
 def print_board(board):
+    """
+    Print the given board in a human-readable format.
+    """
     print("  " + " ".join(str(i) for i in range(len(board[0]))))
     for i, row in enumerate(board):
         print(str(i) + " " + " ".join(row))
 
 
 def print_boards(player_board, computer_board, name):
+    """
+    Print the player and computer boards side by side.
+    """
     hidden_computer_board = [
             ['0' if cell == 'S' else cell for cell in row]
             for row in computer_board]
@@ -77,6 +89,9 @@ def print_boards(player_board, computer_board, name):
 
 
 def check_ship_placement_valid(board, row, col, size, orientation):
+    """
+    Check if a ship can be placed at the given position on the board.
+    """
     if orientation == "horizontal":
         if col + size > len(board[0]):
             return False
@@ -93,6 +108,10 @@ def check_ship_placement_valid(board, row, col, size, orientation):
 
 
 def place_ship(board, row, col, size, orientation):
+    """
+    Place a ship of given size and orientation on the board at the specified
+    position.
+    """
     if orientation == "horizontal":
         for i in range(size):
             board[row][col + i] = "S"
@@ -102,6 +121,9 @@ def place_ship(board, row, col, size, orientation):
 
 
 def place_random_fleet(board, fleet):
+    """
+    Place the given fleet randomly on the board.
+    """
     for ship in fleet:
         size, _ = ship
         while True:
@@ -113,6 +135,9 @@ def place_random_fleet(board, fleet):
 
 
 def user_guess(board):
+    """
+    Prompt the user for a row and column guess within the board's dimensions.
+    """
     while True:
         try:
             guess_row = int(input("Guess Row: "))
@@ -126,6 +151,10 @@ def user_guess(board):
 
 
 def check_guess(board, row, col):
+    """
+    Check the result of a guess on the given board at the specified row and
+    column.
+    """
     if board[row][col] == "S":
         board[row][col] = "H"
         return "hit"
@@ -137,6 +166,10 @@ def check_guess(board, row, col):
 
 
 def update_board(board, row, col, result):
+    """
+    Update the board based on the result of a guess at the specified row and
+    column.
+    """
     if result == "hit":
         board[row][col] = "H"
     elif result == "miss":
@@ -144,12 +177,18 @@ def update_board(board, row, col, result):
 
 
 def computer_guess(board):
+    """
+    Generate a random row and column guess within the board's dimensions.
+    """
     guess_row = random_row(board)
     guess_col = random_col(board)
     return guess_row, guess_col
 
 
 def print_scoreboard():
+    """
+    Print the top 10 player scores from the scores.txt file.
+    """
     print("\nTop 10 Players:")
     print("-" * 25)
     try:
@@ -171,6 +210,9 @@ def print_scoreboard():
 
 
 def main():
+    """
+    The main function to run the Battleship game.
+    """
     os.system("cls" if os.name == "nt" else "clear")
     print_ascii_art()
     print_instructions()
@@ -236,7 +278,7 @@ def main():
     computer_score = 0
 
     while turns > 0:
-        print("Turns remaining: %d" % turns)
+        print(f"Turns remaining: {turns}")
         print_boards(player_board, computer_board, name)
         print(f"Your socre: {score}")
         print(f"Computer's Score: {computer_score}")
