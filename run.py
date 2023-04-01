@@ -61,7 +61,8 @@ def print_board(board):
 
 def print_boards(player_board, computer_board, name):
     hidden_computer_board = [
-        ['0' if cell == 'S' else cell for cell in row] for row in computer_board]
+            ['0' if cell == 'S' else cell for cell in row]
+            for row in computer_board]
 
     print(f"{name}'s Board:")
     print(" " + " ".join(str(i) for i in range(len(player_board[0]))))
