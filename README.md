@@ -53,16 +53,6 @@ Battleship is a classic grid-based strategy game where the player competes again
 Players earn points for each successful hit. The points earned for a hit depend on the type of ship hit and the ship's size. The top 10 players' scores will be displayed on the scoreboard.
 ![Fun Math Game Screenshot 2](assets/images/howtoplay.png)
 
-## Improvements
-
-1. Add screenshots or a GIF of the game in action to make the README more visually appealing and help users understand the gameplay better.
-2. Include a section on how to install and set up the project in different environments (Windows, macOS, and Linux).
-3. Provide a link to a video demonstration or a tutorial for users who prefer visual explanations.
-4. Add a "Frequently Asked Questions" section to address common questions or issues that users might face.
-5. Include a "Known Issues" or "Troubleshooting" section to help users resolve problems they may encounter.
-6. Add a "Roadmap" or "Future Plans" section to outline upcoming features and improvements to the game.
-7. Include a "Contributors" section to acknowledge and thank contributors to the project.
-
 ## Bugs & fixes
 
 The project bugs & fixes!
