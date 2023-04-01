@@ -110,3 +110,16 @@ def place_random_fleet(board, fleet):
             if check_ship_placement_valid(board, row, col, size, orientation):
                 place_ship(board, row, col, size, orientation)
                 break
+
+
+def user_guess(board):
+    while True:
+        try:
+            guess_row = int(input("Guess Row: "))
+            guess_col = int(input("Guess Col: "))
+            if 0 <= guess_row < len(board) and 0 <= guess_col < len(board[0]):
+                return guess_row, guess_col
+            else:
+                print("Oops, that's not even in the ocean.")
+        except ValueError:
+            print("Please enter a valid number.")
