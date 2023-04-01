@@ -45,7 +45,6 @@ will show you.
     )
 
 
-
 def random_row(board):
     return random.randint(0, len(board) - 1)
 
@@ -55,7 +54,7 @@ def random_col(board):
 
 
 def print_board(board):
-    print(" " + " ".join.(str(i) for i in range(len(board[0]))))
+    print("  " + " ".join(str(i) for i in range(len(board[0]))))
     for i, row in enumerate(board):
         print(str(i) + " " + " ".join(row))
 
@@ -83,7 +82,7 @@ def check_ship_placement_valid(board, row, col, size, orientation):
         for i in range(size):
             if board[row][col + i] != "0":
                 return False
-    else: #vertical
+    else:
         if row + size > len(board):
             return False
         for i in range(size):
@@ -96,7 +95,7 @@ def place_ship(board, row, col, size, orientation):
     if orientation == "horizontal":
         for i in range(size):
             board[row][col + i] = "S"
-    else: #vertical
+    else:  # vertical
         for i in range(size):
             board[row + i][col] = "S"
 
@@ -234,3 +233,64 @@ def main():
         print_boards(player_board, computer_board, name)
         print(f"Your socre: {score}")
         print(f"Computer's Score: {computer_score}")
+
+        guess_row, guess_col = user_guess(player_board)
+        result = check_guess(computer_board, guess_row, guess_col)
+        update_board(player_board, guess_row, guess_col, result)
+
+        if result == "hit":
+            print("You hit a ship")
+            ship_name = None
+            for ship_size, ship_name in fleet:
+                if computer_board[guess_row][guess_col] == ship_name[0]:
+                    ship_name = ship_name
+                    break
+            hits[ship_name] += 1
+            score += ship_points[ship_name] // ship_size
+
+            if sum(hits.values()) == total_ship_sizes:
+                print("Congratulations! You sank all the ships!")
+                break
+        elif result == "miss":
+            print("You missed.")
+        else:
+            print("You already guessed that location.")
+
+        guess_row, guess_col = computer_guess(player_board)
+        result = check_guess(player_board, guess_row, guess_col)
+        update_board(player_board, guess_row, guess_col, result)
+
+        if result == "hit":
+            print("The Computer hit your ship!")
+            ship_name = None
+            for ship_size, ship_name in fleet:
+                if player_board[guess_row][guess_col] == ship_name[0]:
+                    ship_name = ship_name
+                    break
+            computer_score += ship_points[ship_name] // ship_size
+        elif result == "miss":
+            print("The computer missed.")
+        else:
+            print("The computer already guessed that location.")
+
+        if sum(hits.values()) == total_ship_sizes:
+            print("Game Over! The computer sank all your ships!")
+            break
+
+        turns -= 1
+
+    if turns == 0:
+        print("Game Over! You ran out of turns!")
+
+    print_boards(player_board, computer_board, name)
+    print(f"Your final score: {score}")
+    print(f"Computer's final score: {computer_score}")
+
+    with open("scores.txt", "a", encoding="utf-8") as score_file:
+        score_file.write(f"{name},{age},{score}\n")
+
+    print_scoreboard()
+
+
+if __name__ == "__main__":
+    main()
