@@ -43,3 +43,34 @@ will show you.
 - Good luck!
     """
     )
+
+
+
+def random_row(board):
+    return random.randint(0, len(board) - 1)
+
+
+def random_col(board):
+    return random.randint(0, len(board[0]) - 1)
+
+
+def print_board(board):
+    print(" " + " ".join.(str(i) for i in range(len(board[0]))))
+    for i, row in enumerate(board):
+        print(str(i) + " " + " ".join(row))
+
+
+def print_boards(player_board, computer_board, name):
+    hidden_computer_board = [
+        ['0' if cell == 'S' else cell for cell in row] for row in computer_board]
+
+    print(f"{name}'s Board:")
+    print(" " + " ".join(str(i) for i in range(len(player_board[0]))))
+    for i, row in enumerate(player_board):
+        print(str(i) + " " + " ".join(row))
+
+    print("\nComputer's Board:")
+    print(" " + " ".join(str(i)
+          for i in range(len(hidden_computer_board[0]))))
+    for i, row in enumerate(hidden_computer_board):
+        print(str(i) + " " + " ".join(row))
