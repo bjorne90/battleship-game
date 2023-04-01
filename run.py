@@ -154,7 +154,14 @@ def print_scoreboard():
     print("-" * 25)
     try:
         with open("scores.txt", "r") as score_file:
-            scores = [line.strip().split(",") for line in score_file.readlines()]
+            scores = []
+            for line in score_file.readlines():
+                try:
+                    name, age, score = line.strip().split(",")
+                    scores.append((name, age, score))
+                except ValueError:
+                    print("Invalid score format:", line.strip())
+                    continue
             sorted_scores = sorted(scores, key=lambda x: int(x[2]), reverse=True)[:10]
             for idx, (name, age, score) in enumerate(sorted_scores):
                 print(f"{idx + 1}. {name} ({age}) - {score} points")
