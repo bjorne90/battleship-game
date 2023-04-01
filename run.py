@@ -65,12 +65,12 @@ def print_boards(player_board, computer_board, name):
             for row in computer_board]
 
     print(f"{name}'s Board:")
-    print(" " + " ".join(str(i) for i in range(len(player_board[0]))))
+    print("  " + " ".join(str(i) for i in range(len(player_board[0]))))
     for i, row in enumerate(player_board):
         print(str(i) + " " + " ".join(row))
 
     print("\nComputer's Board:")
-    print(" " + " ".join(str(i)
+    print("  " + " ".join(str(i)
           for i in range(len(hidden_computer_board[0]))))
     for i, row in enumerate(hidden_computer_board):
         print(str(i) + " " + " ".join(row))
