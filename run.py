@@ -184,7 +184,53 @@ def main():
             break
         elif play == "n":
             sure = input("Are you sure? (y/n) ").lower()
-            if sure = "y":
+            if sure == "y":
                 return
 
-    
+    difficulty = input(
+        "Choose difficulty level (e)asy, (m)edium, or (h)ard: ").lower()
+    if difficulty == "e":
+        grid_size = 5
+        fleet = [(2, "destroyer"), (3, "cruiser"), (4, "battleship")]
+        turns = 10
+    elif difficulty == "m":
+        grid_size = 7
+        fleet = [
+            (2, "destroyer"),
+            (3, "cruiser"),
+            (4, "battleship"),
+            (5, "aircraft_carrier"),
+        ]
+        turns = 15
+    else:  # Hard
+        grid_size = 10
+        fleet = [
+            (2, "destroyer"),
+            (3, "cruiser"),
+            (4, "battleship"),
+            (5, "aircraft_carrier"),
+            (6, "aircraft_carrier"),
+        ]
+        turns = 20
+
+    ship_points = {
+        "destroyer": 4,
+        "cruiser": 6,
+        "battleship": 8,
+        "aircraft_carrier": 10,
+    }
+
+    player_board = [["0"] * grid_size for _ in range(grid_size)]
+    computer_board = [["0"] * grid_size for _ in range(grid_size)]
+    place_random_fleet(computer_board, fleet)
+
+    hits = {ship_name: 0 for _, ship_name in fleet}
+    total_ship_sizes = sum(size for size, _ in fleet)
+    score = 0
+    computer_score = 0
+
+    while turns > 0:
+        print("Turns remaining: %d" % turns)
+        print_boards(player_board, computer_board, name)
+        print(f"Your socre: {score}")
+        print(f"Computer's Score: {computer_score}")
