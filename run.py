@@ -162,7 +162,8 @@ def print_scoreboard():
                 except ValueError:
                     print("Invalid score format:", line.strip())
                     continue
-            sorted_scores = sorted(scores, key=lambda x: int(x[2]), reverse=True)[:10]
+            sorted_scores = sorted(
+                scores, key=lambda x: int(x[2]), reverse=True)[:10]
             for idx, (name, age, score) in enumerate(sorted_scores):
                 print(f"{idx + 1}. {name} ({age}) - {score} points")
     except FileNotFoundError:
