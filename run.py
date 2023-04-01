@@ -123,3 +123,27 @@ def user_guess(board):
                 print("Oops, that's not even in the ocean.")
         except ValueError:
             print("Please enter a valid number.")
+
+
+def check_guess(board, row, col):
+    if board[row][col] == "S":
+        board[row][col] = "H"
+        return "hit"
+    elif board[row][col] == "H" or board[row][col] == "M":
+        return "duplicate"
+    else:
+        board[row][col] = "M"
+        return "miss"
+
+
+def update_board(board, row, col, result):
+    if result == "hit":
+        board[row][col] = "H"
+    elif result == "miss":
+        board[row][col] = "M"
+
+
+def computer_guess(board):
+    guess_row = random_row(board)
+    guess_col = random_col(board)
+    return guess_row, guess_col
