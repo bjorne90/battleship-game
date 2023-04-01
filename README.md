@@ -57,6 +57,34 @@ Players earn points for each successful hit. The points earned for a hit depend 
 
 The project bugs & fixes!
 
+
+
+## Data Model
+
+1. **Boards:**
+    - player_board: A grid representing the player's board, where each cell contains either "0", "S", "H", or "M".
+    - computer_board: A grid representing the computer's board, similar to the player's board.
+    - hidden_computer_board: A version of the computer's board where "S" cells are replaced with "0" cells.
+
+2. **Ship:**
+    - size: The number of cells occupied by the ship.
+    - name: The type of ship, e.g., "destroyer", "cruiser", "battleship", or "aircraft_carrier".
+
+3. **Fleet:** A list of Ship objects, which varies depending on the chosen difficulty level.
+
+4. **Scoreboard:** A list of player scores, read from and written to a text file ("scores.txt"). Each entry includes the player's name, age, and score.
+
+5. **Game Variables:**
+    - name: Player's name.
+    - age: Player's age.
+    - turns: Number of turns remaining.
+    - difficulty: Chosen difficulty level.
+    - grid_size: The size of the game board, depending on the difficulty level.
+    - hits: A dictionary tracking the number of hits on each ship type.
+    - total_ship_sizes: The sum of all ship sizes in the fleet.
+    - score: Player's current score.
+    - computer_score: Computer's current score.
+
 ## Validator testing
 
 - This is fun
