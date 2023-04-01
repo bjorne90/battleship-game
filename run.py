@@ -156,8 +156,10 @@ def print_scoreboard():
         with open("scores.txt", "r") as score_file:
             scores = [line.strip().split(",")
                       for line in score_file.readlines()]
+            # Filter out improperly formatted lines
+            valid_scores = [score for score in scores if len(score) == 3 and score[2].isdigit()]
             sorted_scores = sorted(
-                scores, key=lambda x: int(x[2]), reverse=True)[:10]
+                valid_scores, key=lambda x: int(x[2]), reverse=True)[:10]
             for idx, (name, age, score) in enumerate(sorted_scores):
                 print(f"{idx + 1}. {name} ({age}) - {score} points")
     except FileNotFoundError:
