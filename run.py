@@ -147,3 +147,18 @@ def computer_guess(board):
     guess_row = random_row(board)
     guess_col = random_col(board)
     return guess_row, guess_col
+
+
+def print_scoreboard():
+    print("\nTop 10 Players:")
+    print("-" * 25)
+    try:
+        with open("scores.txt", "r") as score_file:
+            scores = [line.strip().split(",")
+                      for line in score_file.readlines()]
+            sorted_scores = sorted(
+                scores, key=lambda x: int(x[2]), reverse=True)[:10]
+            for idx, (name, age, score) in enumerate(sorted_scores):
+                print(f"{idx + 1}. {name} ({age}) - {score} points")
+    except FileNotFoundError:
+        print("No scores recorded yet.")
