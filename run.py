@@ -27,7 +27,7 @@ def print_ascii_art():
     )
 
 
-def print_instruction():
+def print_instructions():
     """
     Print the game instructions for the Battleship game.
     """
@@ -162,3 +162,29 @@ def print_scoreboard():
                 print(f"{idx + 1}. {name} ({age}) - {score} points")
     except FileNotFoundError:
         print("No scores recorded yet.")
+
+
+def main():
+    os.system("cls" if os.name == "nt" else "clear")
+    print_ascii_art()
+    print_instructions()
+
+    print_scoreboard()
+
+    print()
+    name = input("What's your name? ")
+    age = int(input("What's your age? "))
+    if age < 15:
+        print("Sorry, you must be at least 15 years old to play.")
+        return
+
+    while True:
+        play = input("Do you want to play? (y/n) ").lower()
+        if play == "y":
+            break
+        elif play == "n":
+            sure = input("Are you sure? (y/n) ").lower()
+            if sure = "y":
+                return
+
+    
