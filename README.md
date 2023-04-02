@@ -115,11 +115,12 @@ To customize the game further, you can adjust the ship points, ASCII art, or ins
 
 If you would like to contribute to this project, please feel free to submit a pull request or open an issue on GitHub. We appreciate any suggestions or improvements to the game.
 
-## Acknowledgments
+## Credits
 
-- Thanks to the creators of the original Battleship game for inspiring this project
-- Pythons documentation about PEP8 guidelines
-- The art in the game is with help from [ASCII-Generator](https://ascii-generator.site/)
+* Thanks to the creators of the original Battleship game for inspiring this project
+* Pythons documentation about PEP8 guidelines
+* The art in the game is with help from [ASCII-Generator](https://ascii-generator.site/)
+* Logo is downloaded from [FreePik](https://www.freepik.com/free-vector/illustration-transportation-icon_2944816.htm#query=battleship%20logo&position=28&from_view=keyword&track=ais)
 
 ## Author
 
