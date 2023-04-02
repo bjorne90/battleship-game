@@ -17,7 +17,7 @@
 
 Battleship is a classic grid-based strategy game where the player competes against the computer by guessing the locations of its hidden fleet of ships. The objective is to sink all of the computer's ships within a limited number of turns.
 
-![Fun Math Game Screenshot 2](assets/images/howtoplay.png)
+![Mockup of the game](assets/images/mockupscreen.png)
 
 ## Features
 
@@ -27,8 +27,7 @@ Battleship is a classic grid-based strategy game where the player competes again
 - Score tracking and leaderboard to save top 10 players' scores
 - Age and name input for a more personalized experience
 
-  ![Fun Math Game Screenshot 2](assets/images/howtoplay.png)
-  ![Fun Math Game Screenshot 2](assets/images/howtoplay.png)
+  ![Features of the game](assets/images/features.png)
 
 ## How to Play
 
@@ -51,7 +50,8 @@ Battleship is a classic grid-based strategy game where the player competes again
 ## Scoring
 
 Players earn points for each successful hit. The points earned for a hit depend on the type of ship hit and the ship's size. The top 10 players' scores will be displayed on the scoreboard.
-![Fun Math Game Screenshot 2](assets/images/howtoplay.png)
+
+![Scoreboard of the game](assets/images/scoring.png)
 
 ## Bugs & fixes
 
@@ -87,9 +87,10 @@ The project bugs & fixes!
 
 ## Validator testing
 
-- This is fun
+- Validate the code from Code Institutes [CI Pyhton Linter](https://pep8ci.herokuapp.com//) without any error.
 
-  ![Fun Math Game Screenshot 2](assets/images/howtoplay.png)
+  ![Screenshot from CI Python Linter](assets/images/testing1.png)
+
 
 ## License
 
