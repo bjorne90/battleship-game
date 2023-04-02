@@ -95,7 +95,7 @@ Players earn points for each successful hit. The points earned for a hit depend 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](License) file for details.
 
 ## Requirements
 
@@ -114,7 +114,7 @@ To customize the game further, you can adjust the ship points, ASCII art, or ins
 
 ## Contributing
 
-If you would like to contribute to this project, please feel free to submit a pull request or open an issue on GitHub. We appreciate any suggestions or improvements to the game.
+If you would like to contribute to this project, please feel free to submit a pull request or open an issue on GitHub. I appreciate any suggestions or improvements to the game.
 
 ## Credits
 
