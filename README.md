@@ -55,8 +55,9 @@ Players earn points for each successful hit. The points earned for a hit depend 
 
 ## Bugs & fixes
 
-The project bugs & fixes!
-
+* Write name, age and score to the top 10 list **(*Fixed*)**
+* No information came out to the leaderboard **(*Fixed*)**
+* Syntax error when game ended, no information saved **(*Fixed*)**
 
 
 ## Data Model
