@@ -95,7 +95,7 @@ Players earn points for each successful hit. The points earned for a hit depend 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](License) file for details.
+This project is licensed under the MIT License. See the [License](License) file for details.
 
 ## Requirements
 
