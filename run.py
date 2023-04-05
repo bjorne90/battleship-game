@@ -107,17 +107,17 @@ def check_ship_placement_valid(board, row, col, size, orientation):
     return True
 
 
-def place_ship(board, row, col, size, orientation):
+def place_ship(board, row, col, size, orientation, ship_name):
     """
     Place a ship of given size and orientation on the board at the specified
     position.
     """
     if orientation == "horizontal":
         for i in range(size):
-            board[row][col + i] = "S"
+            board[row][col + i] = ship_name[0]
     else:  # vertical
         for i in range(size):
-            board[row + i][col] = "S"
+            board[row + i][col] = ship_name[0]
 
 
 def place_random_fleet(board, fleet):
@@ -125,13 +125,14 @@ def place_random_fleet(board, fleet):
     Place the given fleet randomly on the board.
     """
     for ship in fleet:
-        size, _ = ship
+        size, name = ship
         while True:
             row, col = random_row(board), random_col(board)
             orientation = random.choice(["horizontal", "vertical"])
             if check_ship_placement_valid(board, row, col, size, orientation):
-                place_ship(board, row, col, size, orientation)
+                place_ship(board, row, col, size, orientation, name)
                 break
+
 
 
 def user_guess(board):
@@ -155,14 +156,17 @@ def check_guess(board, row, col):
     Check the result of a guess on the given board at the specified row and
     column.
     """
-    if board[row][col] == "S":
+    ship_name = None
+    if board[row][col] != "0" and board[row][col] not in ("H", "M"):
+        ship_name = board[row][col]
         board[row][col] = "H"
-        return "hit"
+        return "hit", ship_name
     elif board[row][col] == "H" or board[row][col] == "M":
-        return "duplicate"
+        return "duplicate", ship_name
     else:
         board[row][col] = "M"
-        return "miss"
+        return "miss", ship_name
+
 
 
 def update_board(board, row, col, result):
@@ -220,23 +224,41 @@ def main():
     print_scoreboard()
 
     print()
-    name = input("What's your name? ")
-    age = int(input("What's your age? "))
-    if age < 15:
-        print("Sorry, you must be at least 15 years old to play.")
-        return
+    while True:
+        name = input("What's your name? ").strip()
+        if name and all(c.isalpha() or c.isspace() for c in name):
+            break
+        else:
+            print("Please enter a valid name (letters and spaces only).")
 
     while True:
-        play = input("Do you want to play? (y/n) ").lower()
-        if play == "y":
-            break
-        elif play == "n":
-            sure = input("Are you sure? (y/n) ").lower()
-            if sure == "y":
-                return
+        try:
+            age = int(input("What's your age? "))
+            if age >= 0:
+                break
+            else:
+                print("Please enter a valid age (non-negative integer).")
+        except ValueError:
+            print("Please enter a valid age (non-negative integer).")
 
-    difficulty = input(
-        "Choose difficulty level (e)asy, (m)edium, or (h)ard: ").lower()
+    play_again = True
+    while play_again:
+        while True:
+            play = input("Do you want to play? (y/n) ").lower()
+            if play == "y":
+                break
+            elif play == "n":
+                sure = input("Are you sure? (y/n) ").lower()
+                if sure == "y":
+                    return
+
+    while True:
+        difficulty = input("Choose difficulty level (e)asy, (m)edium, or (h)ard: ").lower()
+        if difficulty in ("e", "m", "h"):
+            break
+        else:
+            print("Please enter a valid difficulty level (e, m, or h).")
+
     if difficulty == "e":
         grid_size = 5
         fleet = [(2, "destroyer"), (3, "cruiser"), (4, "battleship")]
@@ -284,7 +306,7 @@ def main():
         print(f"Computer's Score: {computer_score}")
 
         guess_row, guess_col = user_guess(player_board)
-        result = check_guess(computer_board, guess_row, guess_col)
+        result, ship_name = check_guess(computer_board, guess_row, guess_col)
         update_board(player_board, guess_row, guess_col, result)
 
         if result == "hit":
@@ -306,8 +328,8 @@ def main():
             print("You already guessed that location.")
 
         guess_row, guess_col = computer_guess(player_board)
-        result = check_guess(player_board, guess_row, guess_col)
-        update_board(player_board, guess_row, guess_col, result)
+        result, ship_name = check_guess(player_board, guess_row, guess_col)
+        update_board(computer_board, guess_row, guess_col, result)
 
         if result == "hit":
             print("The Computer hit your ship!")
@@ -339,6 +361,15 @@ def main():
         score_file.write(f"{name},{age},{score}\n")
 
     print_scoreboard()
+
+    # Ask the player if they want to play again
+    while True:
+        again = input("Do you want to play again? (y/n) ").lower()
+        if again == "y":
+            break
+        elif again == "n":
+            play_again = False
+            break
 
 
 if __name__ == "__main__":
