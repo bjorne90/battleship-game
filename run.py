@@ -9,6 +9,55 @@ other's boards.
 
 import random
 import os
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
+# Replace this with your Spreadsheet ID
+SPREADSHEET_ID = "battleship_game"
+
+
+def get_creds():
+    scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+    creds = service_account.Credentials.from_service_account_file(
+        "creds.json"
+    ).with_scopes(scopes)
+    return creds
+
+
+def read_scores_from_sheet():
+    creds = get_creds()
+    service = build("sheets", "v4", credentials=creds)
+
+    range_name = "Sheet1!A2:C"
+    result = (
+        service.spreadsheets()
+        .values()
+        .get(spreadsheetId=SPREADSHEET_ID, range=range_name)
+        .execute()
+    )
+
+    return result.get("values", [])
+
+
+def write_score_to_sheet(name, age, score):
+    creds = get_creds()
+    service = build("sheets", "v4", credentials=creds)
+
+    range_name = "Sheet1!A2:C"
+    values = [[name, age, score]]
+    body = {"values": values}
+
+    result = (
+        service.spreadsheets()
+        .values()
+        .append(
+            spreadsheetId=battleship_game,
+            range=range_name,
+            valueInputOption="USER_ENTERED",
+            body=body,
+        )
+        .execute()
+    )
 
 
 def print_ascii_art():
@@ -191,26 +240,14 @@ def computer_guess(board):
 
 def print_scoreboard():
     """
-    Print the top 10 player scores from the scores.txt file.
+    Print the top 10 player scores from the Google Spreadsheet.
     """
     print("\nTop 10 Players:")
     print("-" * 25)
-    try:
-        with open("scores.txt", "r") as score_file:
-            scores = []
-            for line in score_file.readlines():
-                try:
-                    name, age, score = line.strip().split(",")
-                    scores.append((name, age, score))
-                except ValueError:
-                    print("Invalid score format:", line.strip())
-                    continue
-            sorted_scores = sorted(
-                scores, key=lambda x: int(x[2]), reverse=True)[:10]
-            for idx, (name, age, score) in enumerate(sorted_scores):
-                print(f"{idx + 1}. {name} ({age}) - {score} points")
-    except FileNotFoundError:
-        print("No scores recorded yet.")
+    scores = read_scores_from_sheet()
+    sorted_scores = sorted(scores, key=lambda x: int(x[2]), reverse=True)[:10]
+    for idx, (name, age, score) in enumerate(sorted_scores):
+        print(f"{idx + 1}. {name} ({age}) - {score} points")
 
 
 def main():
@@ -305,50 +342,51 @@ def main():
         print(f"Your socre: {score}")
         print(f"Computer's Score: {computer_score}")
 
-        guess_row, guess_col = user_guess(player_board)
-        result, ship_name = check_guess(computer_board, guess_row, guess_col)
-        update_board(player_board, guess_row, guess_col, result)
+    guess_row, guess_col = user_guess(player_board)
 
-        if result == "hit":
-            print("You hit a ship")
-            ship_name = None
-            for ship_size, ship_name in fleet:
-                if computer_board[guess_row][guess_col] == ship_name[0]:
-                    ship_name = ship_name
-                    break
-            hits[ship_name] += 1
-            score += ship_points[ship_name] // ship_size
+    result, ship_name = check_guess(computer_board, guess_row, guess_col)
+    update_board(player_board, guess_row, guess_col, result)
 
-            if sum(hits.values()) == total_ship_sizes:
-                print("Congratulations! You sank all the ships!")
+    if result == "hit":
+        print("You hit a ship")
+        ship_name = None
+        for ship_size, ship_name in fleet:
+            if computer_board[guess_row][guess_col] == ship_name[0]:
+                ship_name = ship_name
                 break
-        elif result == "miss":
-            print("You missed.")
-        else:
-            print("You already guessed that location.")
-
-        guess_row, guess_col = computer_guess(player_board)
-        result, ship_name = check_guess(player_board, guess_row, guess_col)
-        update_board(computer_board, guess_row, guess_col, result)
-
-        if result == "hit":
-            print("The Computer hit your ship!")
-            ship_name = None
-            for ship_size, ship_name in fleet:
-                if player_board[guess_row][guess_col] == ship_name[0]:
-                    ship_name = ship_name
-                    break
-            computer_score += ship_points[ship_name] // ship_size
-        elif result == "miss":
-            print("The computer missed.")
-        else:
-            print("The computer already guessed that location.")
+        hits[ship_name] += 1
+        score += ship_points[ship_name] // ship_size
 
         if sum(hits.values()) == total_ship_sizes:
-            print("Game Over! The computer sank all your ships!")
-            break
+            print("Congratulations! You sank all the ships!")
+            return
+    elif result == "miss":
+        print("You missed.")
+    else:
+        print("You already guessed that location.")
 
-        turns -= 1
+    guess_row, guess_col = computer_guess(player_board)
+    result, ship_name = check_guess(player_board, guess_row, guess_col)
+    update_board(player_board, guess_row, guess_col, result)
+
+    if result == "hit":
+        print("The Computer hit your ship!")
+        ship_name = None
+        for ship_size, ship_name in fleet:
+            if player_board[guess_row][guess_col] == ship_name[0]:
+                ship_name = ship_name
+                break
+        computer_score += ship_points[ship_name] // ship_size
+    elif result == "miss":
+        print("The computer missed.")
+    else:
+        print("The computer already guessed that location.")
+
+    if sum(hits.values()) == total_ship_sizes:
+        print("Game Over! The computer sank all your ships!")
+        return
+
+    turns -= 1
 
     if turns == 0:
         print("Game Over! You ran out of turns!")
@@ -357,8 +395,7 @@ def main():
     print(f"Your final score: {score}")
     print(f"Computer's final score: {computer_score}")
 
-    with open("scores.txt", "a", encoding="utf-8") as score_file:
-        score_file.write(f"{name},{age},{score}\n")
+    write_score_to_sheet(name, age, score)
 
     print_scoreboard()
 
