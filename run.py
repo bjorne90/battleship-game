@@ -13,7 +13,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 # Replace this with your Spreadsheet ID
-SPREADSHEET_ID = "battleship_game"
+SPREADSHEET_ID = "15KLsoXYCguRlQVbJ9AJMAcFooVNqE8uRy70E2Brq8oY"
 
 
 def get_creds():
