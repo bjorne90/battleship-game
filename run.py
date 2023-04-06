@@ -27,6 +27,10 @@ def get_creds():
 def read_scores_from_sheet():
     creds = get_creds()
     service = build("sheets", "v4", credentials=creds)
+    
+    # Check if the service object is properly initialized
+    if not hasattr(service, 'spreadsheets'):
+        raise ValueError("Service object does not have a member named 'spreadsheets'.")
 
     range_name = "Sheet1!A2:C"
     result = (
@@ -47,17 +51,12 @@ def write_score_to_sheet(name, age, score):
     values = [[name, age, score]]
     body = {"values": values}
 
-    result = (
-        service.spreadsheets()
-        .values()
-        .append(
-            spreadsheetId=battleship_game,
-            range=range_name,
-            valueInputOption="USER_ENTERED",
-            body=body,
-        )
-        .execute()
-    )
+    service.spreadsheets().values().append(
+        spreadsheetId="15KLsoXYCguRlQVbJ9AJMAcFooVNqE8uRy70E2Brq8oY",
+        range=range_name,
+        valueInputOption="USER_ENTERED",
+        body=body,
+    ).execute()
 
 
 def print_ascii_art():
@@ -122,19 +121,23 @@ def print_boards(player_board, computer_board, name):
     Print the player and computer boards side by side.
     """
     hidden_computer_board = [
-            ['0' if cell == 'S' else cell for cell in row]
-            for row in computer_board]
+        ['0' if cell == 'S' else cell for cell in row]
+        for row in computer_board]
 
     print(f"{name}'s Board:")
     print("  " + " ".join(str(i) for i in range(len(player_board[0]))))
     for i, row in enumerate(player_board):
-        print(str(i) + " " + " ".join(row))
+        print(str(i) + " " + " ".join(
+            cell if cell in ('0', 'H', 'M') else '0'
+            for cell in row))
 
     print("\nComputer's Board:")
     print("  " + " ".join(str(i)
           for i in range(len(hidden_computer_board[0]))))
     for i, row in enumerate(hidden_computer_board):
-        print(str(i) + " " + " ".join(row))
+        print(str(i) + " " + " ".join(
+            cell if cell in ('0', 'H') else '0'
+            for cell in row))
 
 
 def check_ship_placement_valid(board, row, col, size, orientation):
@@ -183,7 +186,6 @@ def place_random_fleet(board, fleet):
                 break
 
 
-
 def user_guess(board):
     """
     Prompt the user for a row and column guess within the board's dimensions.
@@ -217,7 +219,6 @@ def check_guess(board, row, col):
         return "miss", ship_name
 
 
-
 def update_board(board, row, col, result):
     """
     Update the board based on the result of a guess at the specified row and
@@ -235,7 +236,8 @@ def computer_guess(board):
     """
     guess_row = random_row(board)
     guess_col = random_col(board)
-    return guess_row, guess_col
+    result, _ = check_guess(board, guess_row, guess_col)
+    return guess_row, guess_col, result
 
 
 def print_scoreboard():
@@ -278,16 +280,14 @@ def main():
         except ValueError:
             print("Please enter a valid age (non-negative integer).")
 
-    play_again = True
-    while play_again:
-        while True:
-            play = input("Do you want to play? (y/n) ").lower()
-            if play == "y":
-                break
-            elif play == "n":
-                sure = input("Are you sure? (y/n) ").lower()
-                if sure == "y":
-                    return
+    while True:
+        play = input("Do you want to play? (y/n) ").lower()
+        if play == "y":
+            break
+        elif play == "n":
+            sure = input("Are you sure? (y/n) ").lower()
+            if sure == "y":
+                return
 
     while True:
         difficulty = input("Choose difficulty level (e)asy, (m)edium, or (h)ard: ").lower()
@@ -342,54 +342,56 @@ def main():
         print(f"Your socre: {score}")
         print(f"Computer's Score: {computer_score}")
 
-    guess_row, guess_col = user_guess(player_board)
+        guess_row, guess_col = user_guess(player_board)
 
-    result, ship_name = check_guess(computer_board, guess_row, guess_col)
-    update_board(player_board, guess_row, guess_col, result)
+        result, ship_name = check_guess(computer_board, guess_row, guess_col)
+        update_board(player_board, guess_row, guess_col, result)
 
-    if result == "hit":
-        print("You hit a ship")
-        ship_name = None
-        for ship_size, ship_name in fleet:
-            if computer_board[guess_row][guess_col] == ship_name[0]:
-                ship_name = ship_name
-                break
-        hits[ship_name] += 1
-        score += ship_points[ship_name] // ship_size
+        if result == "hit":
+            print("You hit a ship")
+            ship_name = None
+            for ship_size, ship_name in fleet:
+                if computer_board[guess_row][guess_col] == ship_name[0]:
+                    ship_name = ship_name
+                    break
+            hits[ship_name] += 1
+            score += ship_points[ship_name] // ship_size
+
+            if sum(hits.values()) == total_ship_sizes:
+                print("Congratulations! You sank all the ships!")
+                return
+        elif result == "miss":
+            print("You missed.")
+        else:
+            print("You already guessed that location.")
+
+        if ship_name is not None:
+            hits[ship_name] += 1
+
+        guess_row, guess_col, result = computer_guess(player_board)
+        update_board(player_board, guess_row, guess_col, result)
+
+        if result == "hit":
+            print("The Computer hit your ship!")
+            ship_name = None
+            for ship_size, ship_name in fleet:
+                if player_board[guess_row][guess_col] == ship_name[0]:
+                    ship_name = ship_name
+                    break
+            computer_score += ship_points[ship_name] // ship_size
+        elif result == "miss":
+            print("The computer missed.")
+        else:
+            print("The computer already guessed that location.")
 
         if sum(hits.values()) == total_ship_sizes:
-            print("Congratulations! You sank all the ships!")
+            print("Game Over! The computer sank all your ships!")
             return
-    elif result == "miss":
-        print("You missed.")
-    else:
-        print("You already guessed that location.")
 
-    guess_row, guess_col = computer_guess(player_board)
-    result, ship_name = check_guess(player_board, guess_row, guess_col)
-    update_board(player_board, guess_row, guess_col, result)
+        turns -= 1
 
-    if result == "hit":
-        print("The Computer hit your ship!")
-        ship_name = None
-        for ship_size, ship_name in fleet:
-            if player_board[guess_row][guess_col] == ship_name[0]:
-                ship_name = ship_name
-                break
-        computer_score += ship_points[ship_name] // ship_size
-    elif result == "miss":
-        print("The computer missed.")
-    else:
-        print("The computer already guessed that location.")
-
-    if sum(hits.values()) == total_ship_sizes:
-        print("Game Over! The computer sank all your ships!")
-        return
-
-    turns -= 1
-
-    if turns == 0:
-        print("Game Over! You ran out of turns!")
+        if turns == 0:
+            print("Game Over! You ran out of turns!")
 
     print_boards(player_board, computer_board, name)
     print(f"Your final score: {score}")
@@ -405,7 +407,6 @@ def main():
         if again == "y":
             break
         elif again == "n":
-            play_again = False
             break
 
 
