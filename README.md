@@ -83,6 +83,8 @@ Players earn points for each successful hit. The points earned for a hit depend 
 * The top 10 scoreboard dont show when player wins by sinking all ships **(*Solved*)**
 * The computers score if there are a hit is not always showing **(*Not Solved*)**
 
+* A fix for the code is to make the *def main():* shorter. I haven't found a workaround for it yet. **(*In progress*)**
+
 ---
 
 ## Data Model
