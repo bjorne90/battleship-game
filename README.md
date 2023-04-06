@@ -80,6 +80,8 @@ Players earn points for each successful hit. The points earned for a hit depend 
 * Syntax error when game ended, no information saved **(*Solved*)**
 * The gameboard was flashing turing play, trying to change os.system to termclear, without result.
   Fixing it by make *'guess_row, guess_col = user_guess(player_board)'* inside the *'while turns > 0:' loop.* **(*Solved*)**
+* The top 10 scoreboard dont show when player wins by sinking all ships **(*Solved*)**
+* The computers score if there are a hit is not always showing **(*Not Solved*)**
 
 ---
 

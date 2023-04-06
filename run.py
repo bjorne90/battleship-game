@@ -135,12 +135,13 @@ def print_boards(player_board, computer_board, name):
     Print the player and computer boards side by side.
     """
     hidden_computer_board = [
-        ['0' if cell == 'S' else cell for cell in row]
-        for row in computer_board]
+        ['0' if (cell == 'S' and (i, j) not in computer_board.hits)
+         else cell for j, cell in enumerate(row)]
+        for i, row in enumerate(computer_board.grid)]
 
     print(f"{name}'s Board:")
     print("  " + " ".join(str(i) for i in range(len(player_board[0]))))
-    for i, row in enumerate(player_board):
+    for i, row in enumerate(player_board.grid):
         print(str(i) + " " + " ".join(
             cell if cell in ('0', 'H', 'M') else '0'
             for cell in row))
