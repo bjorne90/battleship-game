@@ -21,6 +21,7 @@
     <li><a href="#Features">Features</a></li>
     <li><a href="#How-to-Play">How to Play</a></li>
     <li><a href="#Game-Instructions">Game Instructions</a></li>
+    <li><a href="#Scoring">Scoring</a></li>
     <li><a href="#Known-Bugs-and-Fixes">Known Bugs and Fixes</a></li>
     <li><a href="#Data-Model">Data Model</a></li>
     <li><a href="#Validating-&-Testing">Validating & Testing</a></li>
