@@ -290,7 +290,8 @@ def main():
                 return
 
     while True:
-        difficulty = input("Choose difficulty level (e)asy, (m)edium, or (h)ard: ").lower()
+        difficulty = input("Choose difficulty level (e)asy, (m)edium, "
+                            "or (h)ard: ").lower()
         if difficulty in ("e", "m", "h"):
             break
         else:
