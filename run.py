@@ -287,7 +287,7 @@ def main():
     while True:
         try:
             age = int(input("What's your age? "))
-            if age >= 0:
+            if 1 <= age <= 105:
                 break
             else:
                 print("Please enter a valid age (non-negative integer).")
