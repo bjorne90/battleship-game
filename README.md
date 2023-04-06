@@ -34,7 +34,7 @@
 
 Battleship is a classic grid-based strategy game where the player competes against the computer by guessing the locations of its hidden fleet of ships. The objective is to sink all of the computer's ships within a limited number of turns.
 
-![Mockup of the game](assets/images/mockupscreen.png)
+![Mockup of the game](assets/images/mockup.png)
 
 # Features
 
@@ -45,7 +45,9 @@ Battleship is a classic grid-based strategy game where the player competes again
 - Age and name input for a more personalized experience
 - Reads and writes name, age and score to Google Sheet
 
-  ![Features of the game](assets/images/features.png)
+  ![Features of the game](assets/images/features4.png)
+
+---
 
 ## How to Play
 
@@ -54,9 +56,11 @@ Battleship is a classic grid-based strategy game where the player competes again
 3. Follow the on-screen instructions to provide your name, age, and desired difficulty level
 4. Start guessing the locations of the computer's ships by entering the row and column numbers
 5. Try to sink all of the computer's ships within the given number of turns
-6. You can also play it via Demo link in the top of whis README
+6. You can also play it via [Demo Link](https://battleship-game-bc.herokuapp.com/) in the top of whis README
 
 ![Fun Math Game Screenshot 2](assets/images/howtoplay.png)
+
+---
 
 ## Game Instructions
 
@@ -65,11 +69,13 @@ Battleship is a classic grid-based strategy game where the player competes again
 3. To make a guess, enter the row and column of the cell you want to target.
 4. Good luck!
 
+---
+
 ## Scoring
 
 Players earn points for each successful hit. The points earned for a hit depend on the type of ship hit and the ship's size. The top 10 players' scores will be displayed on the scoreboard.
 
-![Scoreboard of the game](assets/images/scoring.png)
+![Scoreboard of the game](assets/images/scores.png)
 
 ---
 
@@ -81,7 +87,7 @@ Players earn points for each successful hit. The points earned for a hit depend 
 * The gameboard was flashing turing play, trying to change os.system to termclear, without result.
   Fixing it by make *'guess_row, guess_col = user_guess(player_board)'* inside the *'while turns > 0:' loop.* **(*Solved*)**
 * The top 10 scoreboard dont show when player wins by sinking all ships **(*Solved*)**
-* The computers score if there are a hit is not always showing **(*Not Solved*)**
+* The computers score if there are a hit is not always showing **(*Not Solved, look at the image in #scoring*)**
 
 * A fix for the code is to make the *def main():* shorter. I haven't found a workaround for it yet. **(*In progress*)**
 
@@ -158,12 +164,16 @@ The following functions are defined in the module:
 
 ## Validating & Testing
 
-- Validate the code from Code Institutes [CI Pyhton Linter](https://pep8ci.herokuapp.com//) without any error.
+- Validate the code from Code Institutes [CI Pyhton Linter](https://pep8ci.herokuapp.com/) with error for trailing whitespace for the ascii art.
 
-  ![Screenshot from CI Python Linter](assets/images/testing1.png)
+  ![Screenshot from CI Python Linter](assets/images/testing.png)
 
 - The game is tested in diffrent browsers, Chrome, Safari and Firefox, without problem.
 - The game is also tested in VScode desktop version
+- The game is reading and writing to Google Sheet without problems to Sheet1!A2:C. 
+
+  ![Screenshot from Google Sheet](assets/images/googlesheet.png)
+
 ---
 
 ## License
