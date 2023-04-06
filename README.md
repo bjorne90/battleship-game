@@ -53,38 +53,44 @@ Players earn points for each successful hit. The points earned for a hit depend 
 
 ![Scoreboard of the game](assets/images/scoring.png)
 
-## Bugs & fixes
+## Known Bugs and Fixes
 
-* Write name, age and score to the top 10 list **(*Fixed*)**
-* No information came out to the leaderboard **(*Fixed*)**
-* Syntax error when game ended, no information saved **(*Fixed*)**
+* Write name, age and score to the top 10 list **(*Solved*)**
+* No information came out to the leaderboard **(*Solved*)**
+* Syntax error when game ended, no information saved **(*Solved*)**
+* The gameboard was flashing turing play, trying to change os.system to termclear, without result.
+  Fixing it by make *'guess_row, guess_col = user_guess(player_board)'* inside the *'while turns > 0:' loop.* **(*Solved*)**
 
+---
 
 ## Data Model
 
-1. **Boards:**
-    - player_board: A grid representing the player's board, where each cell contains either "0", "S", "H", or "M".
-    - computer_board: A grid representing the computer's board, similar to the player's board.
-    - hidden_computer_board: A version of the computer's board where "S" cells are replaced with "0" cells.
+The Battleship game is designed with the following data model:
 
-2. **Ship:**
-    - size: The number of cells occupied by the ship.
-    - name: The type of ship, e.g., "destroyer", "cruiser", "battleship", or "aircraft_carrier".
+### Player
 
-3. **Fleet:** A list of Ship objects, which varies depending on the chosen difficulty level.
+- `name`: A string representing the name of the player.
+- `board`: A 2D list representing the player's game board. Each element in the list is a dictionary representing a cell on the board, with the following keys:
+  - `status`: A string representing the status of the cell, which can be one of the following values: `empty`, `miss`, `hit`, or `sunk`.
+  - `ship`: A string representing the name of the ship that occupies the cell, or `None` if the cell is empty.
 
-4. **Scoreboard:** A list of player scores, read from and written to a text file ("scores.txt"). Each entry includes the player's name, age, and score.
+### Ship
 
-5. **Game Variables:**
-    - name: Player's name.
-    - age: Player's age.
-    - turns: Number of turns remaining.
-    - difficulty: Chosen difficulty level.
-    - grid_size: The size of the game board, depending on the difficulty level.
-    - hits: A dictionary tracking the number of hits on each ship type.
-    - total_ship_sizes: The sum of all ship sizes in the fleet.
-    - score: Player's current score.
-    - computer_score: Computer's current score.
+- `name`: A string representing the name of the ship.
+- `size`: An integer representing the size of the ship.
+- `direction`: A string representing the direction of the ship, which can be one of the following values: `horizontal` or `vertical`.
+- `coordinates`: A list of tuples representing the coordinates of the cells that the ship occupies on the game board.
+
+### Game
+
+- `player`: An instance of the `Player` class representing the human player.
+- `computer`: An instance of the `Player` class representing the computer player.
+- `difficulty`: A string representing the difficulty level of the game, which can be one of the following values: `easy`, `medium`, or `hard`.
+- `current_player`: A string representing the name of the player whose turn it is.
+- `winner`: A string representing the name of the winner of the game, or `None` if the game is not yet over.
+- `game_over`: A boolean value representing whether the game is over.
+
+---
 
 ## Validator testing
 
@@ -92,15 +98,20 @@ Players earn points for each successful hit. The points earned for a hit depend 
 
   ![Screenshot from CI Python Linter](assets/images/testing1.png)
 
+---
 
 ## License
 
 This project is licensed under the MIT License. See the [License](License) file for details.
 
+---
+
 ## Requirements
 
 - Python 3.x
 - No additional libraries are required
+
+---
 
 ## Customization
 
@@ -116,6 +127,8 @@ To customize the game further, you can adjust the ship points, ASCII art, or ins
 
 If you would like to contribute to this project, please feel free to submit a pull request or open an issue on GitHub. I appreciate any suggestions or improvements to the game.
 
+---
+
 ## Credits
 
 * Thanks to the creators of the original Battleship game for inspiring this project
@@ -123,9 +136,13 @@ If you would like to contribute to this project, please feel free to submit a pu
 * The art in the game is with help from [ASCII-Generator](https://ascii-generator.site/)
 * Logo is downloaded from [FreePik](https://www.freepik.com/free-vector/illustration-transportation-icon_2944816.htm#query=battleship%20logo&position=28&from_view=keyword&track=ais)
 
+---
+
 ## Author
 
 - Björn Centio - _Initial work_ - [Bjorne90](https://github.com/bjorne90)
+
+---
 
 ## Contact
 
