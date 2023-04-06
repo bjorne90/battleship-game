@@ -374,7 +374,13 @@ def main():
 
             if sum(hits.values()) == total_ship_sizes:
                 print("Congratulations! You sank all the ships!")
-                return
+                write_score_to_sheet(name, age, score)
+                print_scoreboard()
+                again = input("Do you want to play again? (y/n) ").lower()
+                if again == "y":
+                    main()
+                else:
+                    return
         elif result == "miss":
             print("You missed.")
         else:
