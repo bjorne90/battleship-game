@@ -13,19 +13,37 @@
   </p>
 </div>
 
+## Table of Contents
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#Features">Features</a></li>
+    <li><a href="#How-to-Play">How to Play</a></li>
+    <li><a href="#Game-Instructions">Game Instructions</a></li>
+    <li><a href="#Known-Bugs-and-Fixes">Known Bugs and Fixes</a></li>
+    <li><a href="#Data-Model">Data Model</a></li>
+    <li><a href="#Validating-&-Testing">Validating & Testing</a></li>
+    <li><a href="#Credits">Credits</a></li>
+  </ol>
+</details>
+<br />
+
+
 # Python Battleship Game 🗺️
 
 Battleship is a classic grid-based strategy game where the player competes against the computer by guessing the locations of its hidden fleet of ships. The objective is to sink all of the computer's ships within a limited number of turns.
 
 ![Mockup of the game](assets/images/mockupscreen.png)
 
-## Features
+# Features
 
 - Choose between three difficulty levels: easy, medium, and hard
 - Random ship placement for the computer's fleet
 - Customizable fleet configuration and grid size based on the chosen difficulty level
 - Score tracking and leaderboard to save top 10 players' scores
 - Age and name input for a more personalized experience
+- Reads and writes name, age and score to Google Sheet
 
   ![Features of the game](assets/images/features.png)
 
@@ -53,6 +71,8 @@ Players earn points for each successful hit. The points earned for a hit depend 
 
 ![Scoreboard of the game](assets/images/scoring.png)
 
+---
+
 ## Known Bugs and Fixes
 
 * Write name, age and score to the top 10 list **(*Solved*)**
@@ -69,47 +89,92 @@ The Battleship game is designed with the following data model:
 
 ### Player
 
-- `name`: A string representing the name of the player.
-- `board`: A 2D list representing the player's game board. Each element in the list is a dictionary representing a cell on the board, with the following keys:
-  - `status`: A string representing the status of the cell, which can be one of the following values: `empty`, `miss`, `hit`, or `sunk`.
-  - `ship`: A string representing the name of the ship that occupies the cell, or `None` if the cell is empty.
+*A Player object represents a player in the game. It has the following attributes:*
+
+* `name` (str): The player's name.
+* `age` (int): The player's age.
+* `score` (int): The player's score.
 
 ### Ship
 
-- `name`: A string representing the name of the ship.
-- `size`: An integer representing the size of the ship.
-- `direction`: A string representing the direction of the ship, which can be one of the following values: `horizontal` or `vertical`.
-- `coordinates`: A list of tuples representing the coordinates of the cells that the ship occupies on the game board.
+*A Ship object represents a ship on the game board. It has the following attributes:*
+
+* name (str): The name of the ship.
+* size (int): The size of the ship (in grid units).
+* hits (int): The number of times the ship has been hit.
+
+### Board
+
+A Board object represents a game board. It has the following attributes:
+
+* size (int): The size of the board (in grid units).
+* ships (list): A list of Ship objects on the board.
+* grid (list): A 2D list representing the state of the board. Each element in the grid can be one of the following:
+    * "0": An empty cell.
+    * "S": A cell containing part of a ship.
+    * "H": A cell containing a part of a ship that has been hit.
+    * "M": A cell that has been fired at and missed.
 
 ### Game
 
-- `player`: An instance of the `Player` class representing the human player.
-- `computer`: An instance of the `Player` class representing the computer player.
-- `difficulty`: A string representing the difficulty level of the game, which can be one of the following values: `easy`, `medium`, or `hard`.
-- `current_player`: A string representing the name of the player whose turn it is.
-- `winner`: A string representing the name of the winner of the game, or `None` if the game is not yet over.
-- `game_over`: A boolean value representing whether the game is over.
+A Game object represents a game instance. It has the following attributes:
+
+* player (Player): The player object for the game.
+* board_size (int): The size of the game board.
+* difficulty (str): The difficulty level of the game ("easy", "medium", or "hard").
+* player_board (Board): The player's game board.
+* computer_board (Board): The computer's game board.
+* fleet (list): A list of tuples representing the ships in the game fleet. Each tuple contains the size of the ship and its name.
+* turns (int): The number of turns the player has to sink all the ships.
+* ship_points (dict): A dictionary mapping ship names to their point values.
+* hits (dict): A dictionary mapping ship names to the number of hits they have received.
+* total_ship_sizes (int): The sum of the sizes of all the ships in the game fleet.
+* score (int): The player's score.
+* computer_score (int): The computer's score.
+
+### Functions
+
+The following functions are defined in the module:
+
+* place_random_fleet(board, fleet): Places the ships in the fleet randomly on the given board.
+* user_guess(board): Prompts the user for a guess on the given board.
+* check_guess(board, row, col): Checks the result of a guess on the given board at the specified row and column.
+* update_board(board, row, col, result): Updates the given board based on the result of a guess at the specified row and column.
+* computer_guess(board): Generates a random guess for the computer on the given board.
+* read_scores_from_sheet(): Reads the game scores from a Google Sheet.
+* write_score_to_sheet(name, age, score): Writes the player's name, age, and score to a Google Sheet.
+* print_board(board): Prints the given board in a human-readable format.
+* print_boards(player_board, computer_board, name): Prints the player and computer boards side by side.
+* print_scoreboard(): Prints the top 10 players in right order
+
+
+
 
 ---
 
-## Validator testing
+## Validating & Testing
 
 - Validate the code from Code Institutes [CI Pyhton Linter](https://pep8ci.herokuapp.com//) without any error.
 
   ![Screenshot from CI Python Linter](assets/images/testing1.png)
 
+- The game is tested in diffrent browsers, Chrome, Safari and Firefox, without problem.
+- The game is also tested in VScode desktop version
 ---
 
 ## License
 
-This project is licensed under the MIT License. See the [License](License) file for details.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
 ## Requirements
 
 - Python 3.x
-- No additional libraries are required
+- Library: google-api-python-client
+```bash
+pip install google-api-python-client
+```
 
 ---
 
@@ -123,6 +188,8 @@ To customize the game settings, you can modify the fleet configuration, grid siz
 
 To customize the game further, you can adjust the ship points, ASCII art, or instructions displayed during the game.
 
+----
+
 ## Contributing
 
 If you would like to contribute to this project, please feel free to submit a pull request or open an issue on GitHub. I appreciate any suggestions or improvements to the game.
@@ -135,6 +202,7 @@ If you would like to contribute to this project, please feel free to submit a pu
 * Pythons documentation about PEP8 guidelines
 * The art in the game is with help from [ASCII-Generator](https://ascii-generator.site/)
 * Logo is downloaded from [FreePik](https://www.freepik.com/free-vector/illustration-transportation-icon_2944816.htm#query=battleship%20logo&position=28&from_view=keyword&track=ais)
+* Thanks for the guides at [The Python Package Index](https://pypi.org/)
 
 ---
 
