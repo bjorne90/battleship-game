@@ -69,7 +69,7 @@ Battleship is a classic grid-based strategy game where the player competes again
 
 Players earn points for each successful hit. The points earned for a hit depend on the type of ship hit and the ship's size. The top 10 players' scores will be displayed on the scoreboard.
 
-![Scoreboard of the game](assets/images/scoring.png)
+![Scoreboard of the game](assets/images/scoring.png)![Scoreboard of the game](assets/images/scoring.png)
 
 ---
 
