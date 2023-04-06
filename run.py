@@ -17,6 +17,9 @@ SPREADSHEET_ID = "15KLsoXYCguRlQVbJ9AJMAcFooVNqE8uRy70E2Brq8oY"
 
 
 def get_creds():
+    """
+    Returns Google Sheets credentials to authorize API requests.
+    """
     scopes = ["https://www.googleapis.com/auth/spreadsheets"]
     creds = service_account.Credentials.from_service_account_file(
         "creds.json"
@@ -25,12 +28,15 @@ def get_creds():
 
 
 def read_scores_from_sheet():
+    """
+    Reads the game scores from a Google Sheet.
+    """
     creds = get_creds()
     service = build("sheets", "v4", credentials=creds)
-    
     # Check if the service object is properly initialized
     if not hasattr(service, 'spreadsheets'):
-        raise ValueError("Service object does not have a member named 'spreadsheets'.")
+        raise ValueError("Service object does not have a member named "
+                         "'spreadsheets'.")
 
     range_name = "Sheet1!A2:C"
     result = (
@@ -44,6 +50,14 @@ def read_scores_from_sheet():
 
 
 def write_score_to_sheet(name, age, score):
+    """
+    Writes the player's name, age, and score to a Google Sheets file.
+
+    Args:
+        name (str): The player's name.
+        age (int): The player's age.
+        score (int): The player's score.
+    """
     creds = get_creds()
     service = build("sheets", "v4", credentials=creds)
 
@@ -291,7 +305,7 @@ def main():
 
     while True:
         difficulty = input("Choose difficulty level (e)asy, (m)edium, "
-                            "or (h)ard: ").lower()
+                           "or (h)ard: ").lower()
         if difficulty in ("e", "m", "h"):
             break
         else:
